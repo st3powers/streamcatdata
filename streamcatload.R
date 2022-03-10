@@ -40,6 +40,8 @@ files<-substr(reads,starts,ends)
 url0<-"https://gaftp.epa.gov/epadatacommons/ORD/NHDPlusLandscapeAttributes/StreamCat/HydroRegions/"
 
 for (i in 1:10){
+#for (i in 1:200){ 
+#for (i in 201:300){  
 #for (i in 1:length(files)){
   urli<-paste(url0,files[i],sep="")  
   tmp<-tempfile(tmpdir=getwd(),fileext=".zip")
