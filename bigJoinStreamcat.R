@@ -21,17 +21,22 @@ library(readtext)
 
 # 3. Read in relevant data files ------------------------------------------
 # read in variable list with descriptions
-variables <- read.csv('./variablelist-quickreference.csv')
+#variables <- read.csv('./variablelist-quickreference.csv')
 # NLCD2016_variables <- variables %>% filter(Data.Location == "All tables" | grepl("NLCD2016_", variables$Data.Location))
 
 # read in data files for Region 12
 #filepaths <- list.files(path = './data/', pattern = 'NLCD', recursive = TRUE)
 
-region<-12
+#region<-"12"
+#region<-"11"
+#region<-"10L"
+#region<-"10U"
+#region<-"08"
+region<-"07"
 patternset<-paste("Region",region,'.zip$',sep="")
 outfile<-paste0("", "combinedStreamcatRegion",region,"_", Sys.Date(), ".csv")
 
-filepaths <- list.files(path = './data/', pattern = patternset, recursive = TRUE)
+filepaths <- list.files(path = './EPAtables/', pattern = patternset, recursive = TRUE)
 #filepaths<-filepaths[-grep("MTBS|EPA_FRS|FirePerimeters|ForestLoss|ICI_IWI|CanalDensity|GeoChemPhys4|wdrw|WaterInput|sw_flux|NRSA_Predicted|ImperviousSurfacesHiSlope|ImperviousSurfacesMidSlope|HiSlope_R|NonAgIntro",filepaths)]
 filepaths<-filepaths[-grep("MTBS|EPA_FRS|FirePerimeters|ForestLoss|ICI_IWI|CanalDensity|GeoChemPhys4|wdrw|WaterInput|sw_flux|NRSA_Predicted",filepaths)]
 
@@ -39,7 +44,7 @@ filepaths<-filepaths[-grep("MTBS|EPA_FRS|FirePerimeters|ForestLoss|ICI_IWI|Canal
 #filenames <- gsub('Region12.csv', '', filepaths)
 #filenames <- gsub('^NLCD/', '', filenames)
 filenames<-filepaths
-filepaths <- paste0('./data/', filepaths)
+filepaths <- paste0('./EPAtables/', filepaths)
 
 #commands<-paste('unzip -cq', filenames)
 
@@ -130,10 +135,10 @@ for(i in 1:length(mydata)){
     test<-datai$COMID-data_wide$COMID
     print(mean(test))
     
-    which_drop<-grep("CatAreaSqKm|WsAreaSqKm|CatPctFull|WsPctFull",names(datai))
-    if(length(which_drop)>0){
-    datai<-datai[,-which_drop] 
-    }
+#    which_drop<-grep("CatAreaSqKm|WsAreaSqKm|CatPctFull|WsPctFull",names(datai))
+#    if(length(which_drop)>0){
+#    datai<-datai[,-which_drop] 
+#    }
     datai<-datai %>% arrange(COMID)
     datai<-datai %>% select(-COMID)
     
@@ -143,8 +148,7 @@ for(i in 1:length(mydata)){
   
 }
 
-bigdata<-data_wide
-
+bigdata<-data_wide[,-which(duplicated(names(data_wide))==TRUE)]
 
 write.csv(bigdata, file = outfile)
 
