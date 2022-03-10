@@ -27,12 +27,12 @@ library(readtext)
 # read in data files for Region 12
 #filepaths <- list.files(path = './data/', pattern = 'NLCD', recursive = TRUE)
 
-#region<-"12"
+region<-"12"
 #region<-"11"
 #region<-"10L"
 #region<-"10U"
 #region<-"08"
-region<-"07"
+#region<-"07"
 patternset<-paste("Region",region,'.zip$',sep="")
 outfile<-paste0("", "combinedStreamcatRegion",region,"_", Sys.Date(), ".csv")
 
@@ -56,6 +56,8 @@ filepaths <- paste0('./EPAtables/', filepaths)
 
 mydata <- lapply(filepaths, readtext)
 names(mydata) <- filenames
+
+
 
 # 4. Data table cleaning --------------------------------------------------
 # Ignore common table columns on all files which contain them except the first
