@@ -1,10 +1,7 @@
-# A script to read in and clean data from StreamCat files
-
 # clear workspace
 rm(list=ls())
 
 # 1. Load packages --------------------------------------------------------
-# TODO: check and make sure all these packages are actually needed
 library(janitor)
 library(lubridate)
 #library(readxl)
@@ -61,7 +58,6 @@ names(mydata) <- filenames
 
 # 4. Data table cleaning --------------------------------------------------
 # Ignore common table columns on all files which contain them except the first
-# All Tables
 commonvariables <- filenames[-grep('RipBuf100_$', filenames)]
 commonvariables <- commonvariables[-grep('HiSlope_$', commonvariables)]
 commonvariables <- commonvariables[-grep('MidSlope_$', commonvariables)]
