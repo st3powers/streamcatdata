@@ -85,7 +85,6 @@ commonvariables <- commonvariables[-1]
 mydata[commonvariables] <- map(mydata[commonvariables], ~ (.x %>% select(-c(CatAreaSqKmSlp10, WsAreaSqKmSlp10, CatPctFullSlp10, WsPctFullSlp10))))
 
 # # Pivot Longer
-# our data is too big to easily implement a long table solution. A long table also doubles the file size.
 # mylongdata <- lapply(names(mydata), function(X, mydata) {
 #   ans <- mydata[[X]] %>% pivot_longer(cols = c(2:ncol(mydata[[X]])), names_to = "Metric", values_to = "Value") ; ans},
 #                             mydata = mydata)
