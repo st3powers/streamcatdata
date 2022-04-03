@@ -36,7 +36,8 @@ region<-"12"
 #regions<-c("04","05")
 #regions<-c("06","07")
 #regions<-c("08","09")
-regions<-c("10L","10U")
+#regions<-c("10L","10U")
+regions<-c("11","12")
 
 
 for(j in 1:length(regions)){
