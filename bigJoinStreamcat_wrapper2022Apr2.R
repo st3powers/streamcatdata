@@ -31,7 +31,10 @@ region<-"12"
 #region<-"08"
 #region<-"07"
 
-regions<-c("01","02","03","04","05")
+#regions<-c("01","02","03","04","05")z
+#regions<-c("03N","03S","03W")
+regions<-c("04","05")
+
 
 for(j in 1:length(regions)){
 
