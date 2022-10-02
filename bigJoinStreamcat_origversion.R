@@ -30,24 +30,6 @@ region<-"12"
 #region<-"10U"
 #region<-"08"
 #region<-"07"
-
-#regions<-c("01","02","03","04","05")z
-#regions<-c("03N","03S","03W")
-#regions<-c("04","05")
-#regions<-c("06","07")
-#regions<-c("08","09")
-#regions<-c("10L","10U")
-regions<-c("11","12")
-#regions<-c("13","14")
-#regions<-c("15","16")
-#regions<-c("17","18")
-#regions<-c("20","21","22")
-
-
-for(j in 1:length(regions)){
-
-region<-regions[j]
-
 patternset<-paste("Region",region,'.zip$',sep="")
 outfile<-paste0("", "combinedStreamcatRegion",region,"_", Sys.Date(), ".csv")
 
@@ -75,7 +57,33 @@ names(mydata) <- filenames
 
 
 # 4. Data table cleaning --------------------------------------------------
+# Ignore common table columns on all files which contain them except the first
+commonvariables <- filenames[-grep('RipBuf100_$', filenames)]
+commonvariables <- commonvariables[-grep('HiSlope_$', commonvariables)]
+commonvariables <- commonvariables[-grep('MidSlope_$', commonvariables)]
+commonvariables <- commonvariables[-1] # remove the first list item so that the columns aren't completely deleted
+mydata[commonvariables] <- map(mydata[commonvariables], ~ (.x %>% select(-c(CatAreaSqKm, WsAreaSqKm, CatPctFull, WsPctFull))))
 
+# RipBuf100 tables
+commonvariables <- filenames[grep('RipBuf100_$', filenames)]
+commonvariables <- commonvariables[-1] # remove the first list item so that the columns aren't completely deleted
+mydata[commonvariables] <- map(mydata[commonvariables], ~ (.x %>% select(-c(CatAreaSqKmRp100, WsAreaSqKmRp100, CatPctFullRp100, WsPctFullRp100))))
+
+# HiSlope tables
+# CatAreaSqKmSlp20, WSPctFullSlp20, CatAreaSqKmSlp10, WSPctFullSlp10, CatPctFull, WsPctFull
+commonvariables <- filenames[grep('HiSlope_$', filenames)]
+commonvariables <- commonvariables[-2] # for some reason NLCD2001 Hi Slope had the same metrics as all the other mid slopes, overrride for now
+mydata[commonvariables] <- map(mydata[commonvariables], ~ (.x %>% select(-c(CatAreaSqKmSlp20, WsAreaSqKmSlp20, CatPctFullSlp20, WsPctFullSlp20))))
+
+# MidSlope tables
+commonvariables <- filenames[grep('MidSlope_$', filenames)]
+commonvariables <- commonvariables[-1]
+mydata[commonvariables] <- map(mydata[commonvariables], ~ (.x %>% select(-c(CatAreaSqKmSlp10, WsAreaSqKmSlp10, CatPctFullSlp10, WsPctFullSlp10))))
+
+# # Pivot Longer
+# mylongdata <- lapply(names(mydata), function(X, mydata) {
+#   ans <- mydata[[X]] %>% pivot_longer(cols = c(2:ncol(mydata[[X]])), names_to = "Metric", values_to = "Value") ; ans},
+#                             mydata = mydata)
 
 # 5. Smart List Variable Names -------------------------------------------
 # Get a list of variable names and locations:
@@ -144,4 +152,3 @@ write.csv(bigdata, file = outfile)
 #write.csv(bigdata, file = paste0("", "combinedStreamcatRegion12_", Sys.Date(), ".csv"))
 write.csv(variableLocations.df, file = paste0("", "variableLocations_", Sys.Date(), ".csv"))
 
-}
