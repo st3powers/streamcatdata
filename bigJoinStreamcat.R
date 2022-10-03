@@ -33,9 +33,9 @@ region<-"12"
 
 #regions<-c("01","02","03","04","05")z
 #regions<-c("01","02")
-regions<-c("03N","03S","03W")
+#regions<-c("03N","03S","03W")
 #regions<-c("04","05")
-#regions<-c("06","07")
+regions<-c("06","07")
 #regions<-c("08","09")
 #regions<-c("10L","10U")
 ##regions<-c("11","12")
