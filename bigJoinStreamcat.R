@@ -38,6 +38,7 @@ region<-"12"
 #regions<-c("08","09")
 #regions<-c("10L","10U")
 regions<-c("11","12")
+#regions<-c("12")
 #regions<-c("13","14")
 #regions<-c("15","16")
 #regions<-c("17","18")
@@ -53,7 +54,9 @@ outfile<-paste0("", "combinedStreamcatRegion",region,"_", Sys.Date(), ".csv")
 
 filepaths <- list.files(path = './EPAtables/', pattern = patternset, recursive = TRUE)
 #filepaths<-filepaths[-grep("MTBS|EPA_FRS|FirePerimeters|ForestLoss|ICI_IWI|CanalDensity|GeoChemPhys4|wdrw|WaterInput|sw_flux|NRSA_Predicted|ImperviousSurfacesHiSlope|ImperviousSurfacesMidSlope|HiSlope_R|NonAgIntro",filepaths)]
+#filepaths<-filepaths[-grep("MTBS|EPA_FRS|FirePerimeters|ForestLoss|ICI_IWI|CanalDensity|GeoChemPhys4|wdrw|WaterInput|sw_flux|NRSA_Predicted",filepaths)]
 filepaths<-filepaths[-grep("MTBS|EPA_FRS|FirePerimeters|ForestLoss|ICI_IWI|CanalDensity|GeoChemPhys4|wdrw|WaterInput|sw_flux|NRSA_Predicted",filepaths)]
+filepaths<-filepaths[-grep("NLCD2.*HiSlope|NLCD2.*MidSlope|ImperviousSurfacesHi*|ImperviousSurfacesMid*",filepaths)]
 
 #filepaths <- list.files(path = './data/', pattern = '.zip$', recursive = TRUE)
 #filenames <- gsub('Region12.csv', '', filepaths)
@@ -69,9 +72,25 @@ filepaths <- paste0('./EPAtables/', filepaths)
 #  commands$x
 #}))
 
+#filepaths<-filepaths[c(33,23,25,21)]
+#filenames<-filenames[c(33,23,25,21)]
+
+
+#filenames<-filenames[grep("NLCD",filepaths)]
+#filepaths<-filepaths[grep("NLCD",filepaths)]
+
+
 mydata <- lapply(filepaths, readtext)
 names(mydata) <- filenames
 
+# noticed on 1 Oct 2022 that NLCD2006 and NLCD2008 epa tables have 2001 in the column names
+# renaming 2001 columns as 2006, 2008
+
+names(mydata[[grep("NLCD2008_",filenames)]])<-
+  gsub("2001","2008",names(mydata[[grep("NLCD2008_",filenames)]]))
+
+names(mydata[[grep("NLCD2006_",filenames)]])<-
+  gsub("2001","2006",names(mydata[[grep("NLCD2006_",filenames)]]))
 
 
 # 4. Data table cleaning --------------------------------------------------
